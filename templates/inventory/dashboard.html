@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>📊 Production Overview</h1>
+
+<div class="kpi-container">
+    <div class="kpi-card">
+        <h4>Total Orders</h4>
+        <h3>{{ total_orders }}</h3>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Good Quantity</h4>
+        <h3>{{ total_good }}</h3>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Reject Quantity</h4>
+        <h3>{{ total_reject }}</h3>
+    </div>
+</div>
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>Order ID</th>
+    <th>Operator</th>
+    <th>Good Qty</th>
+    <th>Reject Qty</th>
+</tr>
+
+{% for row in data %}
+<tr>
+    <td>{{ row[0] }}</td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

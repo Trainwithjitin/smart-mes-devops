@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="success-box">
+    ✅ Product Assembled Successfully!
+</div>
+<script>
+    setTimeout(function(){
+        window.location.href = "{{ url_for('assembly') }}";
+    }, 3000);
+</script>
+
+{% endblock %}

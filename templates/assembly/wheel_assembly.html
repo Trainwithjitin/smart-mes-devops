@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center; margin-bottom:30px;">
+    ⚙ Wheel Assembly Station
+</h2>
+
+<div class="assembly-container">
+
+    <!-- LEFT SIDE (Instruction Image) -->
+    <div class="left-panel">
+        <img src="{{ url_for('static', filename='instructions/wheel_process.png') }}">
+    </div>
+
+    <!-- RIGHT SIDE (Confirmation + Capture) -->
+    <div class="right-panel">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <h3>Operator Confirmation</h3>
+
+            <input type="checkbox" id="confirmCheck" onclick="toggleProceed()">
+            <label for="confirmCheck">
+                Have you completed the wheel assembly?
+            </label>
+
+            <br><br>
+
+            <h4>Upload or Capture Image</h4>
+
+            <input type="file" name="photo">
+
+            <br><br>
+
+            <video id="video" width="250" autoplay></video>
+            <br>
+            <button type="button" onclick="capture()">Capture</button>
+
+            <input type="hidden" name="photo_data" id="photo_data">
+
+            <br><br>
+
+            <button id="submitBtn" type="submit" disabled>
+                Submit & Complete
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+function toggleProceed(){
+    const check = document.getElementById("confirmCheck");
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = !check.checked;
+}
+
+const video = document.getElementById('video');
+
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream => { video.srcObject = stream; });
+
+function capture(){
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    document.getElementById('photo_data').value =
+        canvas.toDataURL('image/png');
+
+    alert("Photo Captured ✅");
+}
+
+</script>
+
+{% endblock %}

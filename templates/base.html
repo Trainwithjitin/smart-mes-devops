@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart MES System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="navbar">
+    
+    <!-- Left Logo -->
+    <div class="logo">
+        🏭 MMIP
+    </div>
+
+    <!-- Center Icons -->
+    <div class="nav-icons">
+        <a href="/" title="Home">
+            <i class="fas fa-house"></i>
+        </a>
+    </div>
+
+    <!-- Right User Section -->
+    {% if session.get('user') %}
+    <div class="user-section">
+        <span class="username">
+            👤 {{ session['user'] }}
+        </span>
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fas fa-right-from-bracket"></i>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

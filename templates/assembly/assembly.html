@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 style="text-align:center;">🛠 Assembly Line Operations</h1>
+<p style="text-align:center; margin-bottom:40px;">
+    Select Product for Assembly
+</p>
+
+<div class="assembly-grid">
+
+    <a href="{{ url_for('brake_assembly') }}" class="assembly-card brake">
+        🛑 Brake Assembly
+    </a>
+
+    <a href="{{ url_for('tyre_assembly') }}" class="assembly-card tyre">
+        🛞 Tyre Assembly
+    </a>
+
+    <a href="{{ url_for('wheel_assembly') }}" class="assembly-card wheel">
+        ⚙ Wheel Assembly
+    </a>
+
+</div>
+
+{% endblock %}

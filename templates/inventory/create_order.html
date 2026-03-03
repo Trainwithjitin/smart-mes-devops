@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>📝 Create Production Entry</h2>
+
+<form method="POST">
+    Order ID:
+    <input type="text" name="order_id" required>
+
+    Operator Name:
+    <input type="text" name="operator" required>
+
+    Good Quantity:
+    <input type="number" name="good" required>
+
+    Reject Quantity:
+    <input type="number" name="reject" required>
+
+    <button type="submit">✅ Submit Entry</button>
+</form>
+{% endblock %}

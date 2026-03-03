@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 style="text-align:center;">🏭 Multi Model Integration Platform (MMIP)</h1>
+<p style="text-align:center; font-size:18px; margin-bottom:40px;">
+    Production Monitoring & Tracking Application 🚀
+</p>
+
+<div class="module-grid">
+
+    <a href="{{ url_for('inventory') }}" class="module-card inventory">
+        <div class="icon">📦</div>
+        <h3>Inventory Management</h3>
+        <p>Stock Control • Material Tracking • Warehouse</p>
+    </a>
+
+    <a href="{{ url_for('assembly') }}" class="module-card assembly">
+        <div class="icon">🛠</div>
+        <h3>Work Instruction (Assembly Line)</h3>
+        <p>Operator Guidance • Line Tracking • SOP</p>
+    </a>
+
+    <a href="{{ url_for('quality') }}" class="module-card quality">
+        <div class="icon">🔍</div>
+        <h3>Quality Inspection</h3>
+        <p>Inspection • Defect Logging • Reports</p>
+    </a>
+
+    <a href="{{ url_for('plant') }}" class="module-card plant">
+        <div class="icon">🏭</div>
+        <h3>Plant Overview</h3>
+        <p>Live Status • KPIs • Machine Monitoring</p>
+    </a>
+
+</div>
+
+{% endblock %}

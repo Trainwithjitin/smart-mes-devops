@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>🛠️ Quality Inspection Dashboard</h1>
+
+<!-- Assembly Line Dropdown -->
+<label for="assemblySelect" style="font-weight:bold; font-size:16px;">Select Assembly Line:</label>
+<select id="assemblySelect" onchange="changeAssembly(this.value)">
+    <option value="wheel">Wheel Assembly 🔧</option>
+    <option value="brake">Brake Assembly 🛠️</option>
+    <option value="tyre">Tyre Assembly 🛞</option>
+</select>
+
+<div class="inspection-container"></div>
+
+<!-- Defect Logging Modal -->
+<div id="defectModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDefectModal()">&times;</span>
+        <h2>Log Defect 📝</h2>
+        <form id="defectForm" method="POST" action="{{ url_for('log_defect') }}">
+            <input type="hidden" name="item" id="itemName">
+            <input type="hidden" name="status" value="Fail">
+            <label>Defect Remarks:</label>
+            <textarea name="remarks" placeholder="Describe the defect..." required></textarea>
+            <button type="submit" class="btn btn-submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Logged Defects Table -->
+<h2>📋 Logged Defects</h2>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Logged At</th>
+    </tr>
+    {% for log in logs %}
+    <tr class="{% if log[2]=='Pass' %}pass-row{% elif log[2]=='Fail' %}fail-row{% else %}warning-row{% endif %}">
+        <td>{{ log[1] }}</td>
+        <td>{{ log[2] }}</td>
+        <td>{{ log[3] }}</td>
+        <td>{{ log[4] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+// Checklist Items for each assembly line
+const checklists = {
+    wheel: [
+        { item: "✅ Tyre Pressure" },
+        { item: "⚠️ Wheel Alignment" },
+        { item: "❌ Nuts Tightness" }
+    ],
+    brake: [
+        { item: "✅ Brake Pad Thickness" },
+        { item: "⚠️ Disc Condition" },
+        { item: "❌ Hydraulic Test" }
+    ],
+    tyre: [
+        { item: "✅ Tyre Quality" },
+        { item: "⚠️ Tread Depth" },
+        { item: "❌ Inflation Pressure" }
+    ]
+};
+
+// Dynamically populate checklist
+function changeAssembly(assembly) {
+    const container = document.querySelector('.inspection-container');
+    container.innerHTML = ''; // clear previous items
+
+    checklists[assembly].forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'inspection-item';
+        div.innerHTML = `
+            <span>${c.item}</span>
+            <button class="btn btn-pass" onclick="logStatus('${c.item}','Pass')">Pass</button>
+            <button class="btn btn-fail" onclick="openDefectModal('${c.item}')">❌ Defect</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Initialize default assembly line
+changeAssembly('wheel');
+
+function openDefectModal(item) {
+    document.getElementById('defectModal').style.display = 'block';
+    document.getElementById('itemName').value = item;
+}
+
+function closeDefectModal() {
+    document.getElementById('defectModal').style.display = 'none';
+}
+
+// Quick Pass/Fail logging
+function logStatus(item, status) {
+    let form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ url_for("log_defect") }}';
+
+    let itemInput = document.createElement('input');
+    itemInput.name = 'item';
+    itemInput.value = item;
+    form.appendChild(itemInput);
+
+    let statusInput = document.createElement('input');
+    statusInput.name = 'status';
+    statusInput.value = status;
+    form.appendChild(statusInput);
+
+    let remarksInput = document.createElement('input');
+    remarksInput.name = 'remarks';
+    remarksInput.value = status === 'Pass' ? '✅ Passed' : '';
+    form.appendChild(remarksInput);
+
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+
+{% endblock %}

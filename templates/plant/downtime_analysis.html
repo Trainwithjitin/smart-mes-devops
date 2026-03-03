@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-page">
+
+    <h1>📉 Downtime Analysis</h1>
+
+    <div class="analytics-kpis">
+        <div class="analytics-card">⏳ Total Downtime <h2>4h 32m</h2></div>
+        <div class="analytics-card">🔧 MTTR <h2>38 min</h2></div>
+        <div class="analytics-card">🔁 MTBF <h2>72 hrs</h2></div>
+        <div class="analytics-card">⚠ Breakdowns <h2>6</h2></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="downtimeChart"></canvas>
+    </div>
+
+    <table class="analytics-table">
+        <tr>
+            <th>Machine</th>
+            <th>Issue</th>
+            <th>Duration</th>
+        </tr>
+        <tr><td>Wheel Line</td><td>Bearing Failure</td><td>45 min</td></tr>
+        <tr><td>Brake Line</td><td>Sensor Fault</td><td>32 min</td></tr>
+        <tr><td>Tyre Line</td><td>Motor Overheat</td><td>1h 10m</td></tr>
+    </table>
+
+</div>
+
+<script>
+new Chart(document.getElementById("downtimeChart"), {
+    type: 'bar',
+    data: {
+        labels: ["Mechanical","Electrical","Material","Setup"],
+        datasets: [{
+            label: "Downtime (mins)",
+            data: [120, 95, 60, 40],
+            backgroundColor: ["#ff4d4d","#ffcc00","#00c6ff","#2ecc71"]
+        }]
+    }
+});
+</script>
+
+{% endblock %}

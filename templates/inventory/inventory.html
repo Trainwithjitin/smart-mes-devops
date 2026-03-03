@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📦 Smart Inventory & Production Dashboard</h2>
+
+<!-- 🚀 Quick Actions Panel -->
+<div class="action-panel">
+
+    <a href="{{ url_for('create') }}" class="action-btn create-btn">
+        ➕ Create Production Order
+    </a>
+
+    <a href="{{ url_for('dashboard') }}" class="action-btn dashboard-btn">
+        📊 View Production Dashboard
+    </a>
+
+</div>
+<!-- ================= PRODUCTION KPI ================= -->
+<div class="kpi-container">
+
+    <div class="kpi-card">
+        <h3>📝 Total Orders</h3>
+        <p>{{ total_orders }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>✅ Total Good Quantity</h3>
+        <p>{{ total_good }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>❌ Total Reject Quantity</h3>
+        <p>{{ total_reject }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- ================= INVENTORY KPI ================= -->
+<div class="kpi-container">
+
+    <div class="kpi-card">
+        <h3>📦 Total Items</h3>
+        <p>{{ total_items }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>⚠ Low Stock Items</h3>
+        <p>{{ low_stock_count }}</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>📊 Total Quantity</h3>
+        <p>{{ total_quantity }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- ================= SEARCH ================= -->
+<div class="search-box">
+    <form method="GET">
+        <input type="text" 
+               name="search" 
+               value="{{ request.args.get('search','') }}" 
+               placeholder="🔍 Search Item Name...">
+        <button type="submit" class="btn btn-in">🔎 Search</button>
+    </form>
+</div>
+
+<!-- ================= INVENTORY TABLE ================= -->
+<h3>📦 Inventory Stock</h3>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Min Stock</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for item in inventory %}
+    <tr class="{% if item.quantity < item.min_stock %}low-stock{% endif %}">
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.min_stock }}</td>
+        <td>
+
+            <form action="/stock_in/{{ item.id }}" method="POST" style="display:inline;">
+                <button class="btn btn-in">📤 Stock In</button>
+            </form>
+
+            <form action="/stock_out/{{ item.id }}" method="POST" style="display:inline;">
+                <button class="btn btn-out">📥 Stock Out</button>
+            </form>
+
+        </td>
+    </tr>
+    {% endfor %}
+
+    {% if inventory|length == 0 %}
+    <tr>
+        <td colspan="4" style="text-align:center;">No inventory items found</td>
+    </tr>
+    {% endif %}
+
+</table>
+
+<hr>
+
+<!-- ================= RECENT PRODUCTION ================= -->
+<h3>🏭 Recent Production Entries</h3>
+
+<table>
+<tr>
+    <th>Order ID</th>
+    <th>Operator</th>
+    <th>Good Qty</th>
+    <th>Reject Qty</th>
+</tr>
+
+{% for row in recent_production %}
+<tr>
+    <td>{{ row.order_id }}</td>
+    <td>{{ row.operator_name }}</td>
+    <td>{{ row.good_qty }}</td>
+    <td>{{ row.reject_qty }}</td>
+</tr>
+{% endfor %}
+
+{% if recent_production|length == 0 %}
+<tr>
+    <td colspan="4" style="text-align:center;">No production records found</td>
+</tr>
+{% endif %}
+
+</table>
+
+<hr>
+
+<!-- ================= INVENTORY MOVEMENT HISTORY ================= -->
+<div class="history-box">
+    <h3>📈 Inventory Movement History</h3>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Reference</th>
+        </tr>
+
+        {% for move in history %}
+        <tr>
+            <td>{{ move.date }}</td>
+            <td>{{ move.item_name }}</td>
+            <td>{{ move.type }}</td>
+            <td>{{ move.quantity }}</td>
+            <td>{{ move.reference }}</td>
+        </tr>
+        {% endfor %}
+
+        {% if history|length == 0 %}
+        <tr>
+            <td colspan="5" style="text-align:center;">No movement history found</td>
+        </tr>
+        {% endif %}
+
+    </table>
+</div>
+
+{% endblock %}

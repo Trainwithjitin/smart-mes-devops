@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="plant-overview">
+
+    <h1 class="plant-title">🏭 Smart Manufacturing Control Room</h1>
+
+    <!-- ================= LIVE STATUS ================= -->
+    <div class="status-section">
+
+        <div class="status-card running">
+            🟢 Production Line: RUNNING
+        </div>
+
+        <div class="status-card warning">
+            🟡 Machine 3: Maintenance Due
+        </div>
+
+        <div class="status-card stopped">
+            🔴 Machine 5: STOPPED
+        </div>
+
+    </div>
+
+    <!-- ================= KPI SECTION ================= -->
+    <div class="kpi-section">
+
+        <div class="kpi-card">
+            📦 Today's Production
+            <h2>1,245 Units</h2>
+        </div>
+
+        <div class="kpi-card">
+            ⏳ Downtime Today
+            <h2>1h 12m</h2>
+        </div>
+
+        <div class="kpi-card">
+            🚨 Defects Logged
+            <h2>18</h2>
+        </div>
+
+        <div class="kpi-card">
+            ⚡ Avg Cycle Time
+            <h2>42 sec</h2>
+        </div>
+
+    </div>
+
+    <!-- ================= MACHINE MONITORING ================= -->
+    <div class="machine-section">
+
+        <h2>⚙ Live Machine Monitoring</h2>
+
+        <table class="plant-table">
+            <tr>
+                <th>Machine</th>
+                <th>Status</th>
+                <th>Temperature</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td>Wheel Assembly</td>
+                <td class="green">Running</td>
+                <td>65°C</td>
+                <td>320 Units</td>
+            </tr>
+
+            <tr>
+                <td>Brake Assembly</td>
+                <td class="yellow">Idle</td>
+                <td>58°C</td>
+                <td>180 Units</td>
+            </tr>
+
+            <tr>
+                <td>Tyre Assembly</td>
+                <td class="red">Stopped</td>
+                <td>72°C</td>
+                <td>90 Units</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- ================= OEE SECTION ================= -->
+
+    <div class="oee-section">
+
+        <h2>📊 Overall Equipment Effectiveness (OEE)</h2>
+
+        <div class="oee-cards">
+
+            <div class="oee-card">
+                <h3>⏱ Availability</h3>
+                <div class="gauge" data-value="82">
+                    <div class="gauge-fill"></div>
+                    <div class="gauge-cover">82%</div>
+                </div>
+                <p>Operating vs Planned Time</p>
+            </div>
+
+            <div class="oee-card">
+                <h3>⚙ Performance</h3>
+                <div class="gauge" data-value="74">
+                    <div class="gauge-fill"></div>
+                    <div class="gauge-cover">74%</div>
+                </div>
+                <p>Actual vs Ideal Cycle</p>
+            </div>
+
+            <div class="oee-card">
+                <h3>✅ Quality</h3>
+                <div class="gauge" data-value="91">
+                    <div class="gauge-fill"></div>
+                    <div class="gauge-cover">91%</div>
+                </div>
+                <p>Good vs Total Units</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= ANALYTICS BUTTONS ================= -->
+
+    <div class="analytics-section">
+
+        <a href="{{ url_for('production_trends') }}" class="analytics-btn">
+            📈 Production Trends
+        </a>
+    
+        <a href="{{ url_for('downtime_analysis') }}" class="analytics-btn">
+            📉 Downtime Analysis
+        </a>
+    
+        <a href="{{ url_for('quality_report') }}" class="analytics-btn">
+            📊 Quality Report
+        </a>
+    
+        <a href="{{ url_for('predictive_insights') }}" class="analytics-btn">
+            🧠 Predictive Insights
+        </a>
+    
+    </div>
+
+</div>
+
+<script>
+document.querySelectorAll(".gauge").forEach(gauge => {
+    let value = gauge.getAttribute("data-value");
+    let fill = gauge.querySelector(".gauge-fill");
+    let cover = gauge.querySelector(".gauge-cover");
+
+    let degree = (value / 100) * 180;
+    fill.style.transform = `rotate(${degree}deg)`;
+    cover.innerText = value + "%";
+
+    if (value < 60) {
+        fill.style.background = "#e74c3c";
+    } else if (value < 85) {
+        fill.style.background = "#f39c12";
+    } else {
+        fill.style.background = "#27ae60";
+    }
+});
+</script>
+
+{% endblock %}

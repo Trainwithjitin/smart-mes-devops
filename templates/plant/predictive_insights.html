@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-page">
+
+    <h1>🧠 Predictive Maintenance Insights</h1>
+
+    <div class="analytics-kpis">
+        <div class="analytics-card">⚠ Risk Level <h2>Medium</h2></div>
+        <div class="analytics-card">🔮 Failure Probability <h2>34%</h2></div>
+        <div class="analytics-card">📊 Machine Health <h2>78%</h2></div>
+        <div class="analytics-card">🛠 Suggested Actions <h2>2</h2></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="predictChart"></canvas>
+    </div>
+
+    <table class="analytics-table">
+        <tr>
+            <th>Machine</th>
+            <th>Health Score</th>
+            <th>Next Maintenance</th>
+        </tr>
+        <tr><td>Wheel Line</td><td>82%</td><td>3 Days</td></tr>
+        <tr><td>Brake Line</td><td>74%</td><td>2 Days</td></tr>
+        <tr><td>Tyre Line</td><td>69%</td><td>1 Day</td></tr>
+    </table>
+
+</div>
+
+<script>
+new Chart(document.getElementById("predictChart"), {
+    type: 'radar',
+    data: {
+        labels: ["Vibration","Temperature","Load","Cycle Time","Power"],
+        datasets: [{
+            label: "Health Indicators",
+            data: [75, 82, 70, 68, 80],
+            borderColor: "#00c6ff"
+        }]
+    }
+});
+</script>
+
+{% endblock %}

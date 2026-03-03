@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-page">
+
+    <h1>📊 Quality Report</h1>
+
+    <div class="analytics-kpis">
+        <div class="analytics-card">✅ First Pass Yield <h2>93%</h2></div>
+        <div class="analytics-card">❌ Rejection Rate <h2>7%</h2></div>
+        <div class="analytics-card">🔍 Inspections <h2>1,250</h2></div>
+        <div class="analytics-card">⚠ Defects Logged <h2>88</h2></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="qualityChart"></canvas>
+    </div>
+
+    <button class="export-btn">📄 Export PDF Report</button>
+
+</div>
+
+<script>
+new Chart(document.getElementById("qualityChart"), {
+    type: 'pie',
+    data: {
+        labels: ["Dimensional","Surface","Assembly","Electrical"],
+        datasets: [{
+            data: [35, 25, 18, 10],
+            backgroundColor: ["#ff4d4d","#ffcc00","#00c6ff","#2ecc71"]
+        }]
+    }
+});
+</script>
+
+{% endblock %}

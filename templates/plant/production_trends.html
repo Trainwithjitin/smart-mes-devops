@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-page">
+
+    <h1>📈 Production Trends Dashboard</h1>
+
+    <div class="analytics-kpis">
+        <div class="analytics-card">📦 Total Output <h2>12,540</h2></div>
+        <div class="analytics-card">⚡ Avg Cycle Time <h2>41 sec</h2></div>
+        <div class="analytics-card">🏭 Line Efficiency <h2>87%</h2></div>
+        <div class="analytics-card">🎯 Target Achievement <h2>92%</h2></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="productionChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+new Chart(document.getElementById("productionChart"), {
+    type: 'line',
+    data: {
+        labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        datasets: [{
+            label: "Units Produced",
+            data: [1200, 1500, 1700, 1600, 1900, 2100, 1800],
+            borderColor: "#00c6ff",
+            fill: false,
+            tension: 0.4
+        }]
+    }
+});
+</script>
+
+{% endblock %}
