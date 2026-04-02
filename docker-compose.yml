@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+
+  app:
+    build: .
+    container_name: mes-app
+    volumes:
+      - ./database.db:/app/database.db
+      - ./static/uploads:/app/static/uploads
+
+  nginx:
+    image: nginx
+    container_name: mes-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
